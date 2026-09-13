@@ -130,7 +130,7 @@ def run_ai_analytics(user_query, api_key):
         FROM sales_data GROUP BY Category, Region ORDER BY Profit DESC
     """).df()
 
-        genai.configure(api_key=api_key)
+genai.configure(api_key=api_key)
 
         prompt = f"""You are an elite Enterprise Chief Data Scientist & Commercial Operations Strategist. Analyze this complete transactional performance matrix:
     {sec_perf_to_string()}
