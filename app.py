@@ -129,17 +129,16 @@ def run_ai_analytics(user_query, api_key):
                ROUND((SUM(Profit)/SUM(Sales))*100, 2) as Margin_Pct
         FROM sales_data GROUP BY Category, Region ORDER BY Profit DESC
     """).df()
-    
-    genai.configure(api_key=api_key)
-    
-  prompt = f"""You are an elite Enterprise Chief Data Scientist & Commercial Operations Strategist. Analyze this complete transactional performance matrix:
 
-{sec_perf.to_string()}
+        genai.configure(api_key=api_key)
 
-User Question / Custom Focus: {user_query if user_query.strip() else 'Provide a complete cross-regional profit leak diagnosis and high-ROI execution roadmap.'}
+        prompt = f"""You are an elite Enterprise Chief Data Scientist & Commercial Operations Strategist. Analyze this complete transactional performance matrix:
+    {sec_perf_to_string()}
+    User Question / Custom Focus: {user_query if user_query.strip() else 'Provide a complete cross-regional profit leak diagnosis and high-ROI execution roadmap.'}
+    Deliver a rigorous enterprise executive report structure using clean Markdown tables (`| Col | Col |`) for all financial models and metrics.
+    """
 
-Deliver a rigorous enterprise executive report structure using clean Markdown tables (`| Col | Col |`) for all financial models and metrics.
-"""
+
 
     errors = []
     for model in gemini_models:
