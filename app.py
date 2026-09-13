@@ -195,4 +195,5 @@ with gr.Blocks(theme=gr.themes.Soft(primary_hue="cyan"), css=custom_css) as app:
             btn_sim.click(fn=run_scenario_simulation, inputs=[price_slider, loss_slider], outputs=[sim_md, sim_plot])
 
 # Generates a free public live link in Google Colab instantly
-app.launch(share=True, debug=False, inline=False)
+
+app.launch(server_name="0.0.0.0", server_port=5000, share=False, debug=False, inline=False)
