@@ -1,12 +1,10 @@
-!pip install gradio duckdb pandas numpy plotly google-genai
-
 import gradio as gr
 import duckdb
 import pandas as pd
 import numpy as np
 import plotly.express as px
 import plotly.graph_objects as go
-from google import genai
+import google.generativeai as genai.
 
 # 1. High-Performance Dataset Generation (10,000 Enterprise Records)
 np.random.seed(42)
