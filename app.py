@@ -130,23 +130,20 @@ def run_ai_analytics(user_query, api_key):
         FROM sales_data GROUP BY Category, Region ORDER BY Profit DESC
     """).df()
 
-genai.configure(api_key=api_key)
+    genai.configure(api_key=api_key)
 
-        prompt = f"""You are an elite Enterprise Chief Data Scientist & Commercial Operations Strategist. Analyze this complete transactional performance matrix:
-    {sec_perf_to_string()}
+    prompt = f"""You are an elite Enterprise Chief Data Scientist & Commercial Operations Strategist. Analyze this complete transactional performance matrix:
+    {sec_perf.to_string()}
     User Question / Custom Focus: {user_query if user_query.strip() else 'Provide a complete cross-regional profit leak diagnosis and high-ROI execution roadmap.'}
     Deliver a rigorous enterprise executive report structure using clean Markdown tables (`| Col | Col |`) for all financial models and metrics.
     """
 
-
-
     errors = []
     for model in gemini_models:
         try:
-    model_instance = genai.GenerativeModel(model)
-    response = model_instance.generate_content(prompt)
-    return f"### Enterprise Strategic AI Briefing ({model} Engine)\n\n" + response.text
-
+            model_instance = genai.GenerativeModel(model)
+            response = model_instance.generate_content(prompt)
+            return f"### Enterprise Strategic AI Briefing ({model} Engine)\n\n" + response.text
         except Exception as e:
             errors.append(f"`{model}` error: {str(e)}")
 
@@ -193,6 +190,5 @@ with gr.Blocks(theme=gr.themes.Soft(primary_hue="cyan"), css=custom_css) as app:
                 sim_plot = gr.Plot()
             btn_sim.click(fn=run_scenario_simulation, inputs=[price_slider, loss_slider], outputs=[sim_md, sim_plot])
 
-# Generates a free public live link in Google Colab instantly
-
 app.launch(server_name="0.0.0.0", server_port=5000, share=False, debug=False, inline=False)
+
