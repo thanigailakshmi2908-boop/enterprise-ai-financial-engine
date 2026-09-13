@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 import plotly.express as px
 import plotly.graph_objects as go
-import google.generativeai as genai.
+import google.generativeai as genai
 
 # 1. High-Performance Dataset Generation (10,000 Enterprise Records)
 np.random.seed(42)
@@ -130,8 +130,9 @@ def run_ai_analytics(user_query, api_key):
         FROM sales_data GROUP BY Category, Region ORDER BY Profit DESC
     """).df()
     
-    client = genai.Client(api_key=api_key)
-    prompt = f"""You are an elite Enterprise Chief Data Scientist & Commercial Operations Strategist. Analyze this complete transactional performance matrix:
+    genai.configure(api_key=api_key)
+    
+  prompt = f"""You are an elite Enterprise Chief Data Scientist & Commercial Operations Strategist. Analyze this complete transactional performance matrix:
 
 {sec_perf.to_string()}
 
@@ -143,8 +144,10 @@ Deliver a rigorous enterprise executive report structure using clean Markdown ta
     errors = []
     for model in gemini_models:
         try:
-            response = client.models.generate_content(model=model, contents=prompt)
-            return f"### 📊 Enterprise Strategic AI Briefing (`{model}` Engine)\n\n" + response.text
+    model_instance = genai.GenerativeModel(model)
+    response = model_instance.generate_content(prompt)
+    return f"### Enterprise Strategic AI Briefing ({model} Engine)\n\n" + response.text
+
         except Exception as e:
             errors.append(f"`{model}` error: {str(e)}")
 
